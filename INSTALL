@@ -1,0 +1,4 @@
+type the following command in the shell to install
+./configure
+make
+
