@@ -14,6 +14,7 @@
 #include <string>
 #include <cctype>
 #include <cstdlib>
+#include "mat.h"
 
 using std::string;
 
@@ -47,5 +48,6 @@ void capitalize(string &token);
 /// just help you take care of such things. 
 double to_double(string &); 
 
+void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst);
 
 #endif

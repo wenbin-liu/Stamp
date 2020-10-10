@@ -53,7 +53,7 @@ using std::getline;
 /// Please consider how to support this. 
 /// 
 void Stamp::setup(){
-  int n = static_cast<int>(_node_list.size()) - 1;
+  int n = static_cast<int>(_node_list.size());//we leave out 1 dimension for ground
   _C = new Matrix(n,n);
   _G = new Matrix(n,n);
   _B = new Matrix(n, _num_in);

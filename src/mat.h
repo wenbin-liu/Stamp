@@ -12,6 +12,7 @@
 #define MAT_H
 
 #include <cstring>
+#include <vector>
 
 /// \class Mat 
 ///
@@ -39,8 +40,9 @@ public:
   /// \param ncol #columns
   ///
   /// \todo Allocate the memory with given size of the matrix
+    std::vector< std::vector<T> > matData;
   Mat(int nrow, int ncol) :_row(nrow),_col(ncol) {
-    
+      matData = std::vector<std::vector<T> >(_row, std::vector<T>(_col, 0));
   }
 
 
@@ -58,6 +60,15 @@ public:
   /// \brief return #columns
   /// \return #columns
   int column() const {return _col;}
+  void set(int r, int c, T value)
+  {
+      matData[r][c] = value;
+  }
+  T get(int r, int c)
+  {
+      return matData[r][c];
+  }
+
 private:
   
   /// \brief #rows

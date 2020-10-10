@@ -9,6 +9,7 @@
 ///
 
 #include "util.h"
+#include "mat.h"
 
 string tokenizer(string& line, const string& delims){
 	string toke;
@@ -74,3 +75,19 @@ double to_double(string &str) {
 	}	
 
 }
+
+void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst)
+{
+	int matRow = matSrc.row();
+	int matCol = matSrc.column();
+	for (int i = 0; i < matRow; i++)
+	{
+		for (int j = 0; j < matCol; j++)
+		{
+			double tmp = matDst.get(r[i], c[j]);
+			matDst.set(r[i], c[j], tmp + matSrc.get(i, j));
+		}
+	}
+}
+
+
