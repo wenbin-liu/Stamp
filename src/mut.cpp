@@ -9,9 +9,20 @@
 ///
 
 #include "mut.h"
+#include "util.h"
 
-void Mutual::stamp(Matrix& C, Matrix& G, Matrix& B)
+void Mutual::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U)
 {
   // to be implemented
+	Matrix C_dev(2, 2);
+	C_dev.set(0, 1, -value());
+	C_dev.set(1, 0, -value());
+	
+	int nodes[2];
+	nodes[0] = auxPosNode();
+	nodes[1] = auxNegNode();
+
+	matStamp(nodes, nodes, C_dev, C);
+
   cout<<_name<<' '<<_ind1<<' '<<_ind2<<' '<<_value<<endl;
 }

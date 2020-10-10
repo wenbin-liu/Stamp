@@ -33,7 +33,7 @@ public:
   ///
   /// \todo You have to fills in each stamp function. 
   /// 
-  virtual void stamp(Matrix& C, Matrix& G, Matrix& B);
+  virtual void stamp(Matrix& C, Matrix& G, Matrix& B, Matrix &U);
 
   /// \brief Destructor
   virtual ~Resistor() {}

@@ -11,15 +11,28 @@
 #include "isrc.h"
 #include "util.h"
 
-void Isrc::stamp(Matrix& C, Matrix& G, Matrix& B)
+void Isrc::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U)
 {
-	Matrix B_dev(1, 2);
-	B_dev.set(0, 0, -value());
-	B_dev.set(0, 1, value());
-	int node[2];
+	
+	int srcNum = srcNode();
+	Matrix B_dev(2, 1);
+	// the direction is wrong
+	B_dev.set(0, 0, 1);
+	B_dev.set(1, 0, -1);
+	int node[2],nodeSrc[1];
 	node[0] = pnode();
 	node[1] = nnode();
-	matStamp(node, node, B_dev, B);
+	nodeSrc[0] = srcNum;
+	matStamp(node, nodeSrc, B_dev, B);
+	U.set(srcNum, 0, value());
   // to be implemented
   cout<<_name<<' '<<_pnode<<' '<<_nnode<<' '<<_value<<endl;
+}
+void Isrc::setSrcNode(int k)
+{
+	_srcNode = k;
+}
+int Isrc::srcNode() const
+{
+	return _srcNode;
 }

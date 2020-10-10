@@ -58,10 +58,15 @@ void Stamp::setup(){
   _G = new Matrix(n,n);
   _B = new Matrix(n, _num_in);
   _LT = new Matrix(_num_out, n);
+  _U = new Matrix(_num_in, 1);
   
   for(size_t i=0; i < _dev_list.size(); ++i){
-    _dev_list[i]->stamp(*_C,*_G, *_B);
+    _dev_list[i]->stamp(*_C,*_G, *_B,*_U);
   }
+  for (size_t i = 0; i < _probe_list.size(); i++) {
+	  _LT->set(0,_probe_list[i],1);
+  }
+  
 }
 
 
@@ -76,7 +81,50 @@ void Stamp::setup(){
 /// \todo Please fill in this function. 
 void Stamp::output(char* filename)
 {
-  
+	string filenameStr = filename;
+	matOutput(filenameStr + ".c.bin", *_C);
+	matOutput(filenameStr + ".g.bin", *_G);
+	matOutput(filenameStr + ".b.bin", *_B);
+	matOutput(filenameStr + ".lt.bin", *_LT);
+
+	ofstream outFile(filenameStr, std::ios::out);
+	outFile << "** Matrix " << "C" << " (Size: " << 
+		_C->row() << " x " << _C->column() << ")" << " **" << endl;
+	outFile << "Data saved in " << filenameStr + ".c.bin" << endl;
+	outFile << endl;
+
+	outFile << "** Matrix " << "G" << " (Size: " <<
+		_G->row() << " x " << _G->column() << ")" << " **" << endl;
+	outFile << "Data saved in " << filenameStr + ".g.bin" << endl;
+	outFile << endl;
+
+	outFile << "** Matrix " << "B" << " (Size: " <<
+		_B->row() << " x " << _B->column() << ")" << " **" << endl;
+	outFile << "Data saved in " << filenameStr + ".b.bin" << endl;
+	outFile << endl;
+
+	outFile << "** Matrix " << "LT" << " (Size: " <<
+		_LT->row() << " x " << _LT->column() << ")" << " **" << endl;
+	outFile << "Data saved in " << filenameStr + ".lt.bin" << endl;
+	outFile << endl;
+
+	outFile << "** Matrix " << "X" << " (Size: " <<
+		_node_list.size() << " x " << 1 << ")" << " **" << endl;
+	printNodeList(outFile, _node_list);
+
+	outFile << endl;
+
+	outFile << "** Matrix " << "U" << " (Size: " <<
+		_srcList.size() << " x " << 1 << ")" << " **" << endl;
+	printNodeList(outFile, _srcList);
+
+	outFile << endl;
+
+	outFile << "** Matrix " << "Y" << " (Size: " <<
+		_probe_list.size() << " x " << 1 << ")" << " **" << endl;
+	printProbeList(outFile, _probe_list,_node_list);
+
+	outFile << endl;
 }
 
 
@@ -105,6 +153,7 @@ void Stamp::parse(char* filename)
   string delims(" \n\r()\t");
   int k = 0;
   _node_list["0"] = 0;
+  int srcNum = 0;
 
   while(getline(ifid, line))
     {
@@ -170,7 +219,8 @@ void Stamp::parse(char* filename)
 	// name
 	tmp = tokenizer(line, delims);
 	Isrc* r = new Isrc(tmp);
-
+	_srcList["i:"+tmp] = srcNum;
+	r->setSrcNode(srcNum++);
 	// pnode
 	tmp = tokenizer(line, delims);
 	if(_node_list.find(tmp) == _node_list.end())
@@ -199,6 +249,8 @@ void Stamp::parse(char* filename)
 	// name
 	tmp = tokenizer(line, delims);
 	Vsrc* r = new Vsrc(tmp);
+	_srcList[tmp] = srcNum;
+	r->setSrcNode(srcNum++);
 			
 	// aux current
 	tmp = "i:"+tmp;
@@ -230,7 +282,7 @@ void Stamp::parse(char* filename)
 
 	// add to device list
 	_dev_list.push_back(r);
-	++_num_out;
+	++_num_in;
       }
       else if(line[0] == 'L'){
 	// name
@@ -301,8 +353,11 @@ void Stamp::parse(char* filename)
 	    if(token == "V")
 	      {
 		token = tokenizer(line, delims);
-		continue;
 	      }
+		else
+		{
+			cout << "Error! Unknow probe node" << endl;
+		}
 	    _probe_list.push_back(_node_list[token]);
 	    ++_num_out;
 	    token = tokenizer(line, delims);

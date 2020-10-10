@@ -33,10 +33,16 @@ public:
   ///
   /// \todo You have to fills in each stamp function. 
   ///
-  virtual void stamp(Matrix& C, Matrix& G, Matrix& B);
+  virtual void stamp(Matrix& C, Matrix& G, Matrix& B,Matrix& U);
 
   /// \brief Destructor
   virtual ~Isrc() {}
+
+  void setSrcNode(int k);
+  int srcNode() const;
+
+private:
+	int _srcNode;
 };
 
 #endif

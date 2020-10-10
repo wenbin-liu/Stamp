@@ -15,6 +15,7 @@
 #include <cctype>
 #include <cstdlib>
 #include "mat.h"
+#include <map>
 
 using std::string;
 
@@ -49,5 +50,10 @@ void capitalize(string &token);
 double to_double(string &); 
 
 void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst);
+
+void matOutput(string fileName, Matrix& mat);
+
+void printNodeList(std::ostream& stm, std::map<std::string, int>& list);
+void printProbeList(std::ostream& stm, std::vector<int>& probeList, std::map<string, int>& nodeList);
 
 #endif

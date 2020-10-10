@@ -43,7 +43,7 @@ public:
   /// @param G system matrix \f$ G \f$
   /// @param B system matrix \f$ B \f$
   ///
-  virtual void stamp(Matrix& C, Matrix& G, Matrix& B) = 0;
+  virtual void stamp(Matrix& C, Matrix& G, Matrix& B, Matrix &U) = 0;
 
   /// \brief destructor
   virtual ~Device() {}

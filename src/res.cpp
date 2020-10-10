@@ -11,7 +11,7 @@
 #include "res.h"
 #include "util.h"
 
-void Resistor::stamp(Matrix& C, Matrix& G, Matrix& B)
+void Resistor::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix& U)
 {
   // to be implemented
 	Matrix G_dev(2, 2);

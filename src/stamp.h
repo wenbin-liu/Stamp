@@ -33,7 +33,7 @@ public:
   typedef std::map<std::string, int> nodeList;
 	
   /// \brief Constructor
-  Stamp():_C(NULL),_G(NULL),_B(NULL),_LT(NULL) {}
+  Stamp():_C(NULL),_G(NULL),_B(NULL),_LT(NULL),_U(NULL) {}
 
   /// \brief Destructor
   /// 
@@ -94,11 +94,16 @@ private:
   /// Matrix \f$ L^T \f$ is the output incident matrix
   Matrix* _LT;
 
+  Matrix* _U;
+
   /// \brief #inputs
   int _num_in;
 
   /// \brief #outputs
   int _num_out;
+
+  /// \breif the source list
+  nodeList _srcList;
 };
 
 #endif

@@ -11,7 +11,7 @@
 #include "ind.h"
 #include "util.h"
 
-void Inductor::stamp(Matrix& C, Matrix& G, Matrix& B)
+void Inductor::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix& U)
 {
   // to be implemented
 	Matrix C_dev(3,3), G_dev(3,3);

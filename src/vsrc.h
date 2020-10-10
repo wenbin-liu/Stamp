@@ -36,7 +36,7 @@ public:
   ///
   /// \todo You have to fills in each stamp function. 
   ///
-  virtual void stamp(Matrix& C, Matrix& G, Matrix& B);
+  virtual void stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U);
 
   /// \brief Destructor
   virtual ~Vsrc() {}
@@ -51,11 +51,16 @@ public:
   /// @param s auxiliary node number
   ///
   void setAux(int s) {_aux_node = s;}
+
+
+  void setSrcNode(int k);
+  int srcNode() const;
   
   
 private:
   /// \brief auxiliary node number
   int _aux_node;
+  int _srcNode;
 };
 
 #endif

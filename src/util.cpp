@@ -10,6 +10,9 @@
 
 #include "util.h"
 #include "mat.h"
+#include <fstream>
+#include <iostream>
+#include <map>
 
 string tokenizer(string& line, const string& delims){
 	string toke;
@@ -90,4 +93,66 @@ void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst)
 	}
 }
 
+void matOutput(string fileName, Matrix& mat)
+{
+	std::ofstream outfile(fileName, std::ios::binary | std::ios::out);
+	int32_t rows = mat.row();
+	int32_t cols = mat.column();
+	outfile.write((char*)&rows, sizeof(rows));
+	outfile.write((char*)&cols, sizeof(rows));
+	for (int i = 0; i < mat.row(); i++)
+	{
+		for (int j = 0; j < mat.column(); j++)
+		{
+			double tmp = mat.get(i, j);
+			outfile.write((char*)&tmp, sizeof(tmp));
+		}
+	}
+}
 
+void printNodeList(std::ostream& stm, std::map<std::string, int>& list)
+{
+	std::vector<string> listInv(list.size());
+	std::map<std::string, int>::iterator iter;
+	for (iter = list.begin(); iter != list.end(); iter++)
+	{
+		listInv[iter->second] = iter->first;
+	}
+
+	for (int i = 0; i < listInv.size(); i++)
+	{
+		string str = listInv[i];
+		if (str.substr(0, 2) != "i:")
+		{
+			stm << " " << 'V' << "<" << str << ">";
+		}
+		else
+		{
+			stm << " " << "I" << "<" << str.substr(2) << ">";
+		}
+
+	}
+}
+
+	void printProbeList(std::ostream& stm, std::vector<int> & probeList, std::map<string, int> & nodeList)
+	{
+		std::vector<string> listInv(nodeList.size());
+		std::map<std::string, int>::iterator iter;
+		for (iter = nodeList.begin(); iter != nodeList.end(); iter++)
+		{
+			listInv[iter->second] = iter->first;
+		}
+
+		for (int i = 0; i < probeList.size(); i++)
+		{
+			string str = listInv[probeList[i]];
+			if (str.substr(0, 2) != "i:")
+			{
+				stm << " " << 'V' << "<" << str << ">";
+			}
+			else
+			{
+				stm << " " << "I" << "<" << str.substr(2) << ">";
+			}
+		}
+	}

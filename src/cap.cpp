@@ -11,7 +11,7 @@
 #include "cap.h"
 #include "util.h"
 
-void Capacitor::stamp(Matrix& C, Matrix& G, Matrix& B)
+void Capacitor::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U)
 {
   // to be implemented
 	Matrix C_dev(2,2);
