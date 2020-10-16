@@ -47,7 +47,7 @@ public:
 
 
 
-  void parse(char* filename);
+  void parse(const char* filename);
 
   void output(char* filename);
   void setup();

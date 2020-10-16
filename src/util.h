@@ -55,5 +55,8 @@ void matOutput(string fileName, Matrix& mat);
 
 void printNodeList(std::ostream& stm, std::map<std::string, int>& list);
 void printProbeList(std::ostream& stm, std::vector<int>& probeList, std::map<string, int>& nodeList);
+void subCircuitUnfold(string inFileName, string outFileName);
+
+static void insertSubCircuit(string& name, std::ifstream& inFileStream, std::ofstream& outFileStream, int subCktPos, std::vector<string>& portList);
 
 #endif

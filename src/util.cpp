@@ -156,3 +156,141 @@ void printNodeList(std::ostream& stm, std::map<std::string, int>& list)
 			}
 		}
 	}
+
+	void subCircuitUnfold(string inFileName, string outFileName)
+	{
+		std::ifstream inFileStream(inFileName);
+		std::ofstream outFileStream(outFileName);
+		std::map<string, int> subCktList;
+		string line;
+		string delims(" \n\r()\t");
+		int pos;
+
+		// Record the position of the subcircuit
+		while (!inFileStream.eof())
+		{
+			pos = inFileStream.tellg();
+			std::getline(inFileStream, line);
+			capitalize(line);
+			string tmp = tokenizer(line, delims);
+			if(tmp == ".SUBCKT")
+			{
+				tmp = tokenizer(line,delims);
+				subCktList[tmp] = pos;
+			}
+			
+		}
+		
+		inFileStream.clear();
+		inFileStream.seekg(0);
+		string lineCopy;
+		string name;
+		std::vector<string> portList;
+		while (!inFileStream.eof())
+		{
+			pos = inFileStream.tellg();
+			if (!std::getline(inFileStream, line))
+			{
+				//break;
+				;
+			}
+			capitalize(line);
+			lineCopy = line;
+			string tmp = tokenizer(line, delims);
+
+			if (tmp == ".SUBCKT")
+			{
+				while(tokenizer(line,delims) != ".ENDS")
+					std::getline(inFileStream, line);
+				continue;
+
+			}
+			else if (tmp[0] != 'X')
+			{
+				outFileStream << lineCopy << std::endl;
+			}
+			else
+			{
+				name = tmp;
+				// Parse the ports of the subcircuit
+				portList.clear();
+				while (1)
+				{
+					tmp = tokenizer(line, delims);
+					if (line.find_first_not_of(delims) != string::npos)
+					{
+						portList.push_back(tmp);
+
+					}
+					else
+					{
+						break;
+					}
+
+					
+
+				}
+				insertSubCircuit(name,inFileStream,outFileStream,subCktList[tmp],portList);
+
+
+
+			}
+
+		}
+		outFileStream.close();
+
+}
+
+	static void insertSubCircuit(string& name,std::ifstream &inFileStream,std::ofstream& outFileStream, int subCktPos, std::vector<string>& portList)
+	{
+		int initialPos = inFileStream.tellg();
+		inFileStream.seekg(subCktPos);
+		string tmp;
+		string line;
+		string delims(" \n\r()\t");
+		std::map<string, string> portToNode;
+		
+		
+		getline(inFileStream, line);
+		tmp	= tokenizer(line, delims);
+		tmp = tokenizer(line, delims);
+		for (int i = 0; i < portList.size(); i++)
+		{
+			tmp = tokenizer(line, delims);
+			portToNode[tmp] = portList[i];
+		}
+		portToNode["0"] = "0";
+
+
+		do
+		{
+			std::getline(inFileStream, line);
+			capitalize(line);
+			tmp = tokenizer(line, delims);
+			if (tmp == ".ENDS")
+			{
+				break;
+			}
+			else
+			{
+				outFileStream << tmp << ":" << name<<" ";
+			}
+			std::map<string, string>::iterator iter;
+			tmp = tokenizer(line, delims);
+			iter = portToNode.find(tmp);
+			if (iter != portToNode.end())
+				outFileStream << iter->second << " ";
+			else
+				outFileStream << tmp << ":" << name << " ";
+			tmp = tokenizer(line, delims);
+			iter = portToNode.find(tmp);
+			if (iter != portToNode.end())
+				outFileStream << iter->second << " ";
+			else
+				outFileStream << tmp << ":" << name << " ";
+			tmp = tokenizer(line, delims);
+			outFileStream << tmp << std::endl;
+		} while (1);
+		inFileStream.seekg(initialPos);
+
+}

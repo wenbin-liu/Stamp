@@ -8,7 +8,7 @@
 
 #include "stamp.h"
 #include <iostream>
-
+#include "util.h"
 using std::cout;
 using std::endl;
 
@@ -77,9 +77,13 @@ int main(int argc, char* argv[]){
   }
 
   Stamp s;
+  /// phase 0 subcircuit preprocessing
+  string filenamePre(argv[1]);
+  filenamePre = filenamePre + ".pre";
+  subCircuitUnfold(argv[1], filenamePre);
   
   /// phase 1: parsing the netlist
-  s.parse(argv[1]);
+  s.parse(filenamePre.c_str());
 
   /// phase 2: stamping
   s.setup();

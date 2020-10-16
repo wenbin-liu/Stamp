@@ -143,7 +143,7 @@ void Stamp::output(char* filename)
 /// \todo Currently, only limited devices cards for SPICE are considered. You can 
 /// Further develop this fucntion to  accomodate more SPICE elements or cards such as 
 /// subcircuit or controlled sources. 
-void Stamp::parse(char* filename)
+void Stamp::parse(const char* filename)
 {
   ifstream ifid(filename);
   _num_in = 0;
