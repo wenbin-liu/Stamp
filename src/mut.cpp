@@ -19,8 +19,8 @@ void Mutual::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U)
 	C_dev.set(1, 0, -value());
 	
 	int nodes[2];
-	nodes[0] = auxPosNode();
-	nodes[1] = auxNegNode();
+	nodes[0] = auxPosNode() - 1;
+	nodes[1] = auxNegNode() - 1;
 
 	matStamp(nodes, nodes, C_dev, C);
 

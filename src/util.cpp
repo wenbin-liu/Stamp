@@ -87,6 +87,8 @@ void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst)
 	{
 		for (int j = 0; j < matCol; j++)
 		{
+			if (r[i] < 0 || r[j] <0)
+				continue;
 			double tmp = matDst.get(r[i], c[j]);
 			matDst.set(r[i], c[j], tmp + matSrc.get(i, j));
 		}
@@ -110,7 +112,7 @@ void matOutput(string fileName, Matrix& mat)
 	}
 }
 
-void printNodeList(std::ostream& stm, std::map<std::string, int>& list)
+void printNodeList(std::ostream& stm, std::map<std::string, int>& list,bool outZero)
 {
 	std::vector<string> listInv(list.size());
 	std::map<std::string, int>::iterator iter;
@@ -118,8 +120,12 @@ void printNodeList(std::ostream& stm, std::map<std::string, int>& list)
 	{
 		listInv[iter->second] = iter->first;
 	}
-
-	for (int i = 0; i < listInv.size(); i++)
+	int i = 0;
+	if (outZero == false)
+	{
+		i++;
+	}
+	for (; i < listInv.size(); i++)
 	{
 		string str = listInv[i];
 		if (str.substr(0, 2) != "i:")

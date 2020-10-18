@@ -21,8 +21,8 @@ void Capacitor::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix &U)
 	C_dev.set(1, 1, value());
 
 	int node[2];
-	node[0] = pnode();
-	node[1] = nnode();
+	node[0] = pnode() - 1;
+	node[1] = nnode() - 1;
 	matStamp(node, node, C_dev, C);
   cout<<_name<<' '<<_pnode<<' '<<_nnode<<' '<<_value<<endl;
 }

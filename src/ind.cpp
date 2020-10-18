@@ -22,9 +22,9 @@ void Inductor::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix& U)
 	G_dev.set(1, 2, -1);
 	G_dev.set(2, 1, 1);
 	int node[3];
-	node[0] = pnode();
-	node[1] = nnode();
-	node[2] = auxNode();
+	node[0] = pnode() - 1;
+	node[1] = nnode() - 1;
+	node[2] = auxNode() - 1;
 	matStamp(node, node, G_dev, G);
 	matStamp(node, node, C_dev, C);
 

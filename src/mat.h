@@ -13,6 +13,8 @@
 
 #include <cstring>
 #include <vector>
+#include <list>
+
 
 /// \class Mat 
 ///
@@ -77,10 +79,94 @@ private:
   int _col;
 };
 
+template <class T>
+struct SMatNode
+{
+    int r;
+    int c;
+    T value;
+};
+
+using namespace std;
+
+template<class T>
+class SMat
+{
+public:
+    SMat(int nrow, int ncol) :_row(nrow), _col(ncol),_rowVec(nrow,nullptr)
+    {
+        for (int i = 0; i < nrow; i++)
+        {
+            _rowVec[i] = new list<SMatNode<T> >;
+        }
+    }
+
+    /// \brief return #rows
+/// \return #rows
+    int row() const { return _row; }
+
+    /// \brief return #columns
+    /// \return #columns
+    int column() const { return _col; }
+    void set(int r, int c, T value)
+    {
+        list<SMatNode<T> > * pHead = _rowVec[r];
+        list<SMatNode<T> >::iterator iter,lastIter = pHead->begin();
+        for (iter = pHead->begin(); iter != pHead->end() && (*iter).c < c; iter++)
+        {
+            lastIter = iter;
+        }
+        SMatNode<T> newNode;
+        newNode.r = r;
+        newNode.c = c;
+        newNode.value = value;
+        if (iter == pHead->end())
+        {
+
+            pHead->insert(iter, newNode);
+
+        }
+        else if((*iter).c == c)
+        {
+            (*iter).value = value;
+        }
+        else
+        {
+            pHead->insert(lastIter, newNode);
+        }
+
+    }
+    T get(int r, int c)
+    {
+        list<SMatNode<T> >::iterator iter;
+        list<SMatNode<T> >* pHead = _rowVec[r];
+        for (iter = pHead->begin(); iter != pHead->end(); iter++)
+        {
+            if ((*iter).c == c)
+            {
+                return (*iter).value;
+            }
+        }
+        return (T)0;
+    }
+
+    ~SMat()
+    {
+        for (int i = 0; i < _row; i++)
+        {
+            delete _rowVec[i];
+        }
+    }
+
+private:
+    int _row, _col;
+    vector<list<SMatNode<T> >* > _rowVec;
+};
 
 
+//typedef Mat<double> Matrix;
+typedef SMat<double> Matrix;
 
-typedef Mat<double> Matrix;
 
 
 #endif

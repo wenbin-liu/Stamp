@@ -53,7 +53,7 @@ void matStamp(int r[], int c[], Matrix& matSrc, Matrix& matDst);
 
 void matOutput(string fileName, Matrix& mat);
 
-void printNodeList(std::ostream& stm, std::map<std::string, int>& list);
+void printNodeList(std::ostream& stm, std::map<std::string, int>& list, bool outZero);
 void printProbeList(std::ostream& stm, std::vector<int>& probeList, std::map<string, int>& nodeList);
 void subCircuitUnfold(string inFileName, string outFileName);
 

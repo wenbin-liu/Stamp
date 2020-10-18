@@ -25,9 +25,9 @@ void Vsrc::stamp(Matrix& C, Matrix& G, Matrix& B,Matrix& U)
 	B_dev.set(2, 0, 1);
 
 	int nodes[3];
-	nodes[0] = pnode();
-	nodes[1] = nnode();
-	nodes[2] = auxNode();
+	nodes[0] = pnode() - 1;
+	nodes[1] = nnode() - 1;
+	nodes[2] = auxNode() - 1;
 
 	int nodesSrc[1];
 	nodesSrc[0] = srcNode();

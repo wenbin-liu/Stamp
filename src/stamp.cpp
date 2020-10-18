@@ -54,17 +54,18 @@ using std::getline;
 /// 
 void Stamp::setup(){
   int n = static_cast<int>(_node_list.size());//we leave out 1 dimension for ground
-  _C = new Matrix(n,n);
-  _G = new Matrix(n,n);
-  _B = new Matrix(n, _num_in);
-  _LT = new Matrix(_num_out, n);
+  _C = new Matrix(n-1,n-1);
+  _G = new Matrix(n-1,n-1);
+  _B = new Matrix(n-1, _num_in);
+  _LT = new Matrix(_num_out, n-1);
   _U = new Matrix(_num_in, 1);
   
   for(size_t i=0; i < _dev_list.size(); ++i){
     _dev_list[i]->stamp(*_C,*_G, *_B,*_U);
   }
   for (size_t i = 0; i < _probe_list.size(); i++) {
-	  _LT->set(0,_probe_list[i],1);
+	  if(_probe_list[i]>0)
+		 _LT->set(0,_probe_list[i]-1,1);	
   }
   
 }
@@ -110,13 +111,13 @@ void Stamp::output(char* filename)
 
 	outFile << "** Matrix " << "X" << " (Size: " <<
 		_node_list.size() << " x " << 1 << ")" << " **" << endl;
-	printNodeList(outFile, _node_list);
+	printNodeList(outFile, _node_list,false);
 
 	outFile << endl;
 
 	outFile << "** Matrix " << "U" << " (Size: " <<
 		_srcList.size() << " x " << 1 << ")" << " **" << endl;
-	printNodeList(outFile, _srcList);
+	printNodeList(outFile, _srcList,true);
 
 	outFile << endl;
 
